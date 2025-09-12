@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Detalhes do Console</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item>
+    <ion-label>Habilitar edição</ion-label>
+    <ion-toggle color="success" (ionChange)="alterarEdicao()"></ion-toggle>
+  </ion-item>
+
+  <ion-list>
+    <ion-item lines="none">
+      <ion-input placeholder="Nome do Console" type="text" [(ngModel)]="nome" [disabled]="!editar"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-input placeholder="Marca" type="text" [(ngModel)]="marca" [disabled]="!editar"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label>Ano de Lançamento</ion-label>
+      <ion-datetime-button datetime="datetime" [disabled]="!editar"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime 
+            id="datetime" 
+            [(ngModel)]="anoLancamento"
+            presentation="date"
+            display-format="YYYY"
+          ></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-input placeholder="Armazenamento" type="text" [(ngModel)]="armazenamento" [disabled]="!editar"></ion-input>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-input placeholder="Voltagem" type="text" [(ngModel)]="voltagem" [disabled]="!editar"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" (click)="excluir()" color="danger" [disabled]="!editar">Excluir</ion-button>
+    <ion-button expand="block" (click)="salvar()" color="primary" [disabled]="!editar">Salvar</ion-button>
+  </ion-list>
+</ion-content>
