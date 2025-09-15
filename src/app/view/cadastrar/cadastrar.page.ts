@@ -55,7 +55,7 @@ export class CadastrarPage implements OnInit {
 
   async presentAlert(subHeader: string, message: string) {
     const alert = await this.alertController.create({
-      header: 'Cadastro de Consoles',
+      header: 'Atenção',
       subHeader: subHeader,
       message: message,
       buttons: ['OK'],
