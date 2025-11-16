@@ -1,48 +1,58 @@
-import { Injectable } from '@angular/core';
-import { ConsoleVideogame } from 'src/app/model/console';
+import { Injectable, NgZone } from '@angular/core';
+import { Firestore, collection, addDoc, collectionData, doc, docData, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { ConsoleVideogame } from '../model/console';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsoleService {
-  private _consoles: ConsoleVideogame[] = [];
+  private collectionName = 'consoles';
 
-  constructor(){
- 
+  constructor(private firestore: Firestore, private ngZone: NgZone) {}
+
+  public create(console: ConsoleVideogame) {
+    const colRef = collection(this.firestore, this.collectionName);
+    return addDoc(colRef, {
+      id: console.id,
+      nome: console.nome,
+      marca: console.marca,
+      anoLancamento: console.anoLancamento,
+      armazenamento: console.armazenamento,
+      voltagem: console.voltagem
+    });
   }
 
-  public get consoles(): ConsoleVideogame[] {
-    return this._consoles;
+  public getAll(): Observable<ConsoleVideogame[]> {
+    const colRef = collection(this.firestore, this.collectionName);
+    return collectionData(colRef, { idField: 'id' }) as Observable<ConsoleVideogame[]>;
   }
 
-  public create(console: ConsoleVideogame): boolean {
-    this._consoles.push(console);
-    return true;
+  public getById(id: string): Observable<ConsoleVideogame> {
+    const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+    return docData(docRef, { idField: 'id' }) as Observable<ConsoleVideogame>;
   }
 
-  public editar(console: ConsoleVideogame, nome: string, marca: string,
-                anoLancamento: Date, armazenamento: string, voltagem: string): boolean {
-    for(let i = 0; i < this._consoles.length; i++){
-      if(this._consoles[i].id === console.id){
-        this._consoles[i].nome = nome;
-        this._consoles[i].marca = marca;
-        this._consoles[i].anoLancamento = anoLancamento;
-        this._consoles[i].armazenamento = armazenamento;
-        this._consoles[i].voltagem = voltagem;
-        return true;
-      }
-    }
-    return false;
+  public update(console: ConsoleVideogame) {
+    const docRef = doc(this.firestore, `${this.collectionName}/${console.id}`);
+    return updateDoc(docRef, {
+      nome: console.nome,
+      marca: console.marca,
+      anoLancamento: console.anoLancamento,
+      armazenamento: console.armazenamento,
+      voltagem: console.voltagem
+    });
   }
 
-  public delete(console: ConsoleVideogame): boolean {
-    for(let i = 0; i < this._consoles.length; i++){
-      if(this._consoles[i].id === console.id){
-        this._consoles.splice(i,1);
-        return true;
-      }
-    }
-    return false;
+  public delete(console: ConsoleVideogame) {
+    const docRef = doc(this.firestore, `${this.collectionName}/${console.id}`);
+    return deleteDoc(docRef);
   }
 }
+
+
+
+
+
+
 
