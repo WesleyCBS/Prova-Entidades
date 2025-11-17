@@ -8,17 +8,15 @@ import { ConsoleVideogame } from '../model/console';
 })
 export class FirebaseService {
   private firestore: Firestore = inject(Firestore);
-  private readonly PATH = 'consoles'; // nome da coleção no Firestore
+  private readonly PATH = 'consoles';
 
   constructor() {}
 
-  // Pega todos os consoles
   getAllConsoles(): Observable<ConsoleVideogame[]> {
     const consolesCollection = collection(this.firestore, this.PATH);
     return collectionData(consolesCollection, { idField: 'id' }) as Observable<ConsoleVideogame[]>;
   }
 
-  // Cria um novo console
   create(consoleObj: ConsoleVideogame): Promise<string> {
     const consolesCollection = collection(this.firestore, this.PATH);
     return addDoc(consolesCollection, {
@@ -30,7 +28,6 @@ export class FirebaseService {
     }).then(docRef => docRef.id);
   }
 
-  // Atualiza um console existente
   update(consoleObj: ConsoleVideogame): Promise<void> {
     const consoleRef = doc(this.firestore, `${this.PATH}/${consoleObj.id}`);
     return updateDoc(consoleRef, {
@@ -42,7 +39,6 @@ export class FirebaseService {
     });
   }
 
-  // Deleta um console pelo ID
   delete(id: number): Promise<void> {
     const consoleRef = doc(this.firestore, `${this.PATH}/${id}`);
     return deleteDoc(consoleRef);

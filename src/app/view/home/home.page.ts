@@ -31,7 +31,6 @@ export class HomePage implements OnInit {
 
   async carregarConsoles() {
     try {
-      // Converte Observable para Promise
       this.consoles = await firstValueFrom(this.consoleService.getAll());
     } catch (err) {
       console.error('Erro ao carregar consoles:', err);

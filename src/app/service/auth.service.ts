@@ -35,19 +35,16 @@ export class AuthService {
     );
   }
 
-  // Login
   public signIn(email: string, password: string): Promise<User> {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((cred) => cred.user);
   }
 
-  // Registro
   public signUpWithEmailPassword(email: string, password: string): Promise<User> {
     return createUserWithEmailAndPassword(this.auth, email, password)
       .then((cred) => cred.user);
   }
 
-  // Logout
   public signOut(): Promise<void> {
     return signOut(this.auth).then(() => {
       localStorage.removeItem('user');

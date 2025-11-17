@@ -60,7 +60,6 @@ export class DetalharPage implements OnInit {
       return;
     }
 
-    // Atualiza os dados da instância existente sem criar um novo objeto
     this.console.nome = this.nome;
     this.console.marca = this.marca;
     this.console.anoLancamento = new Date(this.anoLancamento);
